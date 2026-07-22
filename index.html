@@ -21,6 +21,7 @@ input, select, textarea {
   width: 100%; min-width: 0; max-width: 100%; padding: 9px 10px; border: 1px solid #D6D9D3; border-radius: 8px;
   font-family: 'Libre Franklin', sans-serif; font-size: 16px; background: #fff; color: var(--ink);
 }
+input.fmt { font-family: var(--mono); font-size: 15px; }
 input[type="date"] { -webkit-appearance: none; appearance: none; padding: 9px 6px; }
 input:focus, select:focus, textarea:focus { outline: 2px solid var(--green); outline-offset: -1px; }
 label { font-size: 10px; letter-spacing: .05em; text-transform: uppercase; color: var(--gray); display: block; margin-bottom: 4px; font-weight: 600; }
@@ -57,7 +58,7 @@ button:focus-visible { outline: 2px solid var(--green); outline-offset: 2px; }
 .sec span { font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--green); font-weight: 700; white-space: nowrap; }
 .sec i { flex: 1; height: 1px; background: var(--line); }
 
-.trow { display: grid; grid-template-columns: 1.2fr 1fr .8fr .8fr; gap: 6px; padding: 6px 0; border-bottom: 1px solid #EFF1EE; align-items: baseline; }
+.trow { display: grid; grid-template-columns: 1.1fr 1fr .9fr .9fr; gap: 6px; padding: 6px 0; border-bottom: 1px solid #EFF1EE; align-items: baseline; }
 .trow .l { font-size: 12px; color: var(--gray); font-weight: 500; }
 .trow .c { font-family: var(--mono); font-size: 12px; text-align: right; color: var(--ink); }
 .trow.b .l { color: var(--green); font-weight: 700; }
@@ -130,6 +131,11 @@ button:focus-visible { outline: 2px solid var(--green); outline-offset: 2px; }
         <div><label>Location</label><input id="f_location" placeholder="e.g. 499 President St, Brooklyn" /></div>
         <div><label>SPV / owner entity</label><input id="f_spv" placeholder="e.g. 499 President LLC" /></div>
       </div>
+      <div class="g3">
+        <div><label>Acquisition date</label><input type="date" id="f_acquisition" /></div>
+        <div><label>TCO 1 date</label><input type="date" id="f_tco1" /></div>
+        <div></div>
+      </div>
       <div>
         <label>Photo</label>
         <input type="file" id="f_photo" accept="image/*" style="padding:6px" />
@@ -140,27 +146,27 @@ button:focus-visible { outline: 2px solid var(--green); outline-offset: 2px; }
     <div class="sec"><span>Areas (SF)</span><i></i></div>
     <div class="grid">
       <div class="g3">
-        <div><label>Total ZFA</label><input type="number" inputmode="decimal" id="f_zfa" /></div>
-        <div><label>GSF</label><input type="number" inputmode="decimal" id="f_gsf" /></div>
-        <div><label>Comm. NSF</label><input type="number" inputmode="decimal" id="f_nsfCommercial" /></div>
+        <div><label>Total ZFA</label><input class="fmt" inputmode="decimal" id="f_zfa" /></div>
+        <div><label>GSF</label><input class="fmt" inputmode="decimal" id="f_gsf" /></div>
+        <div><label>Comm. NSF</label><input class="fmt" inputmode="decimal" id="f_nsfCommercial" /></div>
       </div>
       <div class="g3">
-        <div><label>NSF market</label><input type="number" inputmode="decimal" id="f_nsfMarket" /></div>
-        <div><label>NSF stabilized</label><input type="number" inputmode="decimal" id="f_nsfStabilized" /></div>
-        <div><label>NSF affordable</label><input type="number" inputmode="decimal" id="f_nsfAffordable" /></div>
+        <div><label>NSF market</label><input class="fmt" inputmode="decimal" id="f_nsfMarket" /></div>
+        <div><label>NSF stabilized</label><input class="fmt" inputmode="decimal" id="f_nsfStabilized" /></div>
+        <div><label>NSF affordable</label><input class="fmt" inputmode="decimal" id="f_nsfAffordable" /></div>
       </div>
     </div>
 
     <div class="sec"><span>Units</span><i></i></div>
     <div class="grid">
       <div class="g3">
-        <div><label>Market</label><input type="number" inputmode="numeric" id="f_unitsMarket" /></div>
-        <div><label>Stabilized</label><input type="number" inputmode="numeric" id="f_unitsStabilized" /></div>
-        <div><label>Affordable</label><input type="number" inputmode="numeric" id="f_unitsAffordable" /></div>
+        <div><label>Market</label><input class="fmt" inputmode="numeric" id="f_unitsMarket" /></div>
+        <div><label>Stabilized</label><input class="fmt" inputmode="numeric" id="f_unitsStabilized" /></div>
+        <div><label>Affordable</label><input class="fmt" inputmode="numeric" id="f_unitsAffordable" /></div>
       </div>
       <div class="g3">
-        <div><label>Commercial units</label><input type="number" inputmode="numeric" id="f_unitsCommercial" /></div>
-        <div><label>Parking units</label><input type="number" inputmode="numeric" id="f_unitsParking" /></div>
+        <div><label>Commercial units</label><input class="fmt" inputmode="numeric" id="f_unitsCommercial" /></div>
+        <div><label>Parking units</label><input class="fmt" inputmode="numeric" id="f_unitsParking" /></div>
         <div></div>
       </div>
     </div>
@@ -168,15 +174,16 @@ button:focus-visible { outline: 2px solid var(--green); outline-offset: 2px; }
     <div class="sec"><span>Income (annual $)</span><i></i></div>
     <div class="grid">
       <div class="g3">
-        <div><label>Market</label><input type="number" inputmode="decimal" id="f_incMarket" /></div>
-        <div><label>Stabilized</label><input type="number" inputmode="decimal" id="f_incStabilized" /></div>
-        <div><label>Affordable</label><input type="number" inputmode="decimal" id="f_incAffordable" /></div>
+        <div><label>Market</label><input class="fmt" inputmode="decimal" id="f_incMarket" /></div>
+        <div><label>Stabilized</label><input class="fmt" inputmode="decimal" id="f_incStabilized" /></div>
+        <div><label>Affordable</label><input class="fmt" inputmode="decimal" id="f_incAffordable" /></div>
       </div>
       <div class="g3">
-        <div><label>Commercial</label><input type="number" inputmode="decimal" id="f_incCommercial" /></div>
-        <div></div><div></div>
+        <div><label>Commercial</label><input class="fmt" inputmode="decimal" id="f_incCommercial" /></div>
+        <div><label>Parking</label><input class="fmt" inputmode="decimal" id="f_incParking" /></div>
+        <div><label>Other</label><input class="fmt" inputmode="decimal" id="f_incOther" /></div>
       </div>
-      <div class="hint">PSF and per-unit rates appear live in the table below.</div>
+      <div class="hint">PSF, $ per unit, and SF per unit rates appear live in the table below.</div>
     </div>
 
     <div class="totalsbox" id="totalsbox"></div>
@@ -195,6 +202,32 @@ button:focus-visible { outline: 2px solid var(--green); outline-offset: 2px; }
         <div><label>Margin %</label><input type="number" inputmode="decimal" step="0.01" id="f_margin" /></div>
       </div>
       <div><label>All-in rate (calc.)</label><div class="calc" id="allinCalc">—</div></div>
+    </div>
+
+    <div class="sec"><span>Property taxes</span><i></i></div>
+    <div class="grid">
+      <div class="g3">
+        <div><label>Block</label><input inputmode="numeric" id="f_block" /></div>
+        <div><label>Lot</label><input inputmode="numeric" id="f_lot" /></div>
+        <div></div>
+      </div>
+    </div>
+
+    <div class="sec"><span>Ground lease</span><i></i></div>
+    <div class="grid">
+      <div class="g2">
+        <div><label>Ground lease</label><select id="f_groundLease"><option>No</option><option>Yes</option></select></div>
+        <div id="glOwnerWrap" class="hidden"><label>Fee owner</label><input id="f_glFeeOwner" placeholder="e.g. Church of the Holy Trinity" /></div>
+      </div>
+      <div class="g3 hidden" id="glDatesWrap">
+        <div><label>Start</label><input type="date" id="f_glStart" /></div>
+        <div><label>End</label><input type="date" id="f_glEnd" /></div>
+        <div><label>Remaining (calc.)</label><div class="calc" id="glRemCalc">—</div></div>
+      </div>
+      <div class="g3 hidden" id="glPayWrap">
+        <div><label>Annual payment $</label><input class="fmt" inputmode="decimal" id="f_glPayment" /></div>
+        <div></div><div></div>
+      </div>
     </div>
 
     <div class="sec"><span>Tax abatement</span><i></i></div>
@@ -222,8 +255,12 @@ button:focus-visible { outline: 2px solid var(--green); outline-offset: 2px; }
 const KEY = "portfolio-ledger-data";
 const NUMF = ["zfa","gsf","nsfMarket","nsfStabilized","nsfAffordable","nsfCommercial",
   "unitsMarket","unitsStabilized","unitsAffordable","unitsCommercial","unitsParking",
-  "incMarket","incStabilized","incAffordable","incCommercial","indexRate","margin"];
-const TXTF = ["name","location","spv","lender","origination","maturity","index","abatement","abatementType","abatementFrom","abatementUntil"];
+  "incMarket","incStabilized","incAffordable","incCommercial","incParking","incOther",
+  "indexRate","margin","glPayment"];
+const TXTF = ["name","location","spv","lender","origination","maturity","index",
+  "acquisition","tco1","block","lot",
+  "groundLease","glFeeOwner","glStart","glEnd",
+  "abatement","abatementType","abatementFrom","abatementUntil"];
 
 let assets = [];
 let editingId = null;
@@ -244,6 +281,7 @@ const yearsBetween = (a, b) => { if (!a || !b) return null; const x = new Date(a
 const remYears = (m) => { if (!m) return null; const y = yearsBetween(new Date().toISOString().slice(0,10), m); return y === null ? null : Math.max(0, y); };
 const psf = (inc, nsf) => (num(inc) && num(nsf)) ? fmtDec(num(inc) / num(nsf)) : "—";
 const perUnit = (inc, u) => (num(inc) && num(u)) ? fmtMoney(num(inc) / num(u)) : "—";
+const sfPerUnit = (nsf, u) => (num(nsf) && num(u)) ? num(nsf / u * 1).toLocaleString("en-US", { maximumFractionDigits: 0 }) : "—";
 
 function derive(a) {
   const resNsf = num(a.nsfMarket) + num(a.nsfStabilized) + num(a.nsfAffordable);
@@ -251,13 +289,17 @@ function derive(a) {
   const resInc = num(a.incMarket) + num(a.incStabilized) + num(a.incAffordable);
   const totNsf = resNsf + num(a.nsfCommercial);
   const totUnits = resUnits + num(a.unitsCommercial);
-  const totInc = resInc + num(a.incCommercial);
+  const totInc = resInc + num(a.incCommercial) + num(a.incParking) + num(a.incOther);
   const termYrs = yearsBetween(a.origination, a.maturity);
   const remYrs = remYears(a.maturity);
   const allIn = (num(a.indexRate) || num(a.margin)) ? num(a.indexRate) + num(a.margin) : null;
   const abYrs = yearsBetween(a.abatementFrom, a.abatementUntil);
-  return { resNsf, resUnits, resInc, totNsf, totUnits, totInc, termYrs, remYrs, allIn, abYrs };
+  const glRemYrs = remYears(a.glEnd);
+  return { resNsf, resUnits, resInc, totNsf, totUnits, totInc, termYrs, remYrs, allIn, abYrs, glRemYrs };
 }
+
+// SF/unit for a category, taking nsf and units raw values
+const sfu = (nsf, u) => (num(nsf) && num(u)) ? Math.round(num(nsf) / num(u)).toLocaleString("en-US") : "—";
 
 // ---------- persistence ----------
 function load() {
@@ -278,14 +320,13 @@ function banner(msg, isErr) {
   $("banner").innerHTML = msg ? '<div class="' + (isErr ? "banner-err" : "banner-ok") + '">' + esc(msg) + "</div>" : "";
 }
 
-// ---------- table row helper ----------
+// ---------- render helpers ----------
 const trow = (label, c1, c2, c3, bold) =>
   '<div class="trow' + (bold ? " b" : "") + '"><span class="l">' + esc(label) + '</span><span class="c">' + c1 + '</span><span class="c">' + c2 + '</span><span class="c">' + (c3 ?? "") + "</span></div>";
 const metric = (lab, val, cls) => '<div class="m"><div class="lab">' + esc(lab) + '</div><div class="val ' + (cls || "") + '">' + val + "</div></div>";
 
 // ---------- render ----------
 function render() {
-  // rollup
   let tU = 0, tG = 0, tI = 0;
   assets.forEach((a) => { const d = derive(a); tU += d.resUnits; tG += num(a.gsf); tI += d.totInc; });
   $("rollup").innerHTML =
@@ -308,6 +349,12 @@ function render() {
     let detail = "";
     if (open) {
       detail =
+        '<div class="sec"><span>Key dates</span><i></i></div>' +
+        '<div class="metrics3">' +
+          metric("Acquisition", fmtDate(a.acquisition)) +
+          metric("TCO 1", fmtDate(a.tco1)) +
+          "<div></div>" +
+        "</div>" +
         '<div class="sec"><span>Areas</span><i></i></div>' +
         '<div class="metrics3">' + metric("Total ZFA", fmtInt(a.zfa)) + metric("GSF", fmtInt(a.gsf)) + metric("Comm. NSF", fmtInt(a.nsfCommercial)) + "</div>" +
         '<div class="sec"><span>Mix &amp; income</span><i></i></div>' +
@@ -317,15 +364,16 @@ function render() {
         trow("Affordable", fmtInt(a.nsfAffordable), fmtInt(a.unitsAffordable), fmtMoney(a.incAffordable)) +
         trow("Res. total", fmtInt(d.resNsf), fmtInt(d.resUnits), fmtMoney(d.resInc), true) +
         trow("Commercial", fmtInt(a.nsfCommercial), fmtInt(a.unitsCommercial), fmtMoney(a.incCommercial)) +
-        trow("Parking", "—", fmtInt(a.unitsParking), "—") +
+        trow("Parking", "—", fmtInt(a.unitsParking), fmtMoney(a.incParking)) +
+        trow("Other", "—", "—", fmtMoney(a.incOther)) +
         trow("Total", fmtInt(d.totNsf), fmtInt(d.totUnits), fmtMoney(d.totInc), true) +
         '<div class="sec"><span>Per SF / per unit</span><i></i></div>' +
-        trow("", "PSF", "$/Unit", "", true) +
-        trow("Market", psf(a.incMarket, a.nsfMarket), perUnit(a.incMarket, a.unitsMarket)) +
-        trow("Stabilized", psf(a.incStabilized, a.nsfStabilized), perUnit(a.incStabilized, a.unitsStabilized)) +
-        trow("Affordable", psf(a.incAffordable, a.nsfAffordable), perUnit(a.incAffordable, a.unitsAffordable)) +
-        trow("Res. total", psf(d.resInc, d.resNsf), perUnit(d.resInc, d.resUnits), "", true) +
-        trow("Commercial", psf(a.incCommercial, a.nsfCommercial), "—") +
+        trow("", "PSF", "$/Unit", "SF/Unit", true) +
+        trow("Market", psf(a.incMarket, a.nsfMarket), perUnit(a.incMarket, a.unitsMarket), sfu(a.nsfMarket, a.unitsMarket)) +
+        trow("Stabilized", psf(a.incStabilized, a.nsfStabilized), perUnit(a.incStabilized, a.unitsStabilized), sfu(a.nsfStabilized, a.unitsStabilized)) +
+        trow("Affordable", psf(a.incAffordable, a.nsfAffordable), perUnit(a.incAffordable, a.unitsAffordable), sfu(a.nsfAffordable, a.unitsAffordable)) +
+        trow("Res. total", psf(d.resInc, d.resNsf), perUnit(d.resInc, d.resUnits), sfu(d.resNsf, d.resUnits), true) +
+        trow("Commercial", psf(a.incCommercial, a.nsfCommercial), perUnit(a.incCommercial, a.unitsCommercial), sfu(a.nsfCommercial, a.unitsCommercial)) +
         '<div class="sec"><span>Debt</span><i></i></div>' +
         '<div class="metrics3">' +
           metric("Lender", esc(a.lender || "—"), "plain") +
@@ -338,6 +386,22 @@ function render() {
           metric("Margin", fmtPct(a.margin)) +
           metric("All-in rate", d.allIn !== null ? d.allIn.toFixed(2) + "%" : "—", "accent") +
         "</div>" +
+        '<div class="sec"><span>Property taxes</span><i></i></div>' +
+        '<div class="metrics3">' +
+          metric("Block", esc(a.block || "—"), "plain") +
+          metric("Lot", esc(a.lot || "—"), "plain") +
+          "<div></div>" +
+        "</div>" +
+        '<div class="sec"><span>Ground lease</span><i></i></div>' +
+        (a.groundLease === "Yes"
+          ? '<div class="metrics3">' +
+            metric("Fee owner", esc(a.glFeeOwner || "—"), "plain") +
+            metric("Start", fmtDate(a.glStart)) +
+            metric("End", fmtDate(a.glEnd)) +
+            metric("Remaining", d.glRemYrs !== null ? d.glRemYrs.toFixed(1) + " yrs" : "—", "accent") +
+            metric("Annual payment", fmtMoney(a.glPayment)) +
+            "</div>"
+          : '<div class="hint">Fee simple — no ground lease</div>') +
         '<div class="sec"><span>Tax abatement</span><i></i></div>' +
         (a.abatement === "Yes"
           ? '<div class="metrics">' +
@@ -374,7 +438,7 @@ function render() {
   }).join("");
 }
 
-// ---------- list actions (event delegation) ----------
+// ---------- list actions ----------
 $("list").addEventListener("click", (e) => {
   const btn = e.target.closest("button[data-act]");
   if (!btn) return;
@@ -390,15 +454,22 @@ $("list").addEventListener("click", (e) => {
 function readForm() {
   const a = { id: editingId || Date.now().toString(36) + Math.random().toString(36).slice(2, 6), photo: photoData };
   TXTF.forEach((f) => (a[f] = $("f_" + f).value.trim()));
-  NUMF.forEach((f) => (a[f] = $("f_" + f).value));
+  NUMF.forEach((f) => (a[f] = $("f_" + f).value.replace(/,/g, "")));
   return a;
 }
 function fillForm(a) {
-  TXTF.forEach((f) => ($("f_" + f).value = a[f] ?? (f === "index" ? "SOFR" : f === "abatement" ? "No" : f === "abatementType" ? "421-a" : "")));
-  NUMF.forEach((f) => ($("f_" + f).value = a[f] ?? ""));
+  TXTF.forEach((f) => {
+    const def = f === "index" ? "SOFR" : (f === "abatement" || f === "groundLease") ? "No" : f === "abatementType" ? "421-a" : "";
+    $("f_" + f).value = a[f] ?? def;
+  });
+  NUMF.forEach((f) => {
+    const el = $("f_" + f);
+    const v = a[f] ?? "";
+    el.value = (el.classList.contains("fmt") && v !== "") ? formatNum(String(v)) : v;
+  });
   photoData = a.photo || "";
   $("f_photo").value = "";
-  updatePhotoPreview(); updateCalcs(); updateAbVisibility();
+  updatePhotoPreview(); updateCalcs(); updateToggles();
 }
 function openForm(a) {
   editingId = a ? a.id : null;
@@ -420,7 +491,27 @@ $("saveBtn").addEventListener("click", () => {
   if (save()) { closeForm(); render(); }
 });
 
-// photo: compress via canvas before storing
+// live thousands-separator formatting
+function formatNum(raw) {
+  raw = raw.replace(/[^0-9.]/g, "");
+  if (raw === "") return "";
+  const parts = raw.split(".");
+  const intPart = parts[0].replace(/^0+(?=\d)/, "");
+  const formatted = intPart === "" ? "0" : Number(intPart).toLocaleString("en-US");
+  return formatted + (parts.length > 1 ? "." + parts.slice(1).join("").slice(0, 2) : "");
+}
+function formatLive(el) {
+  const before = el.value;
+  const after = formatNum(before);
+  if (before !== after) {
+    const fromEnd = before.length - (el.selectionStart ?? before.length);
+    el.value = after;
+    const pos = Math.max(0, after.length - fromEnd);
+    try { el.setSelectionRange(pos, pos); } catch {}
+  }
+}
+
+// photo
 $("f_photo").addEventListener("change", (e) => {
   const file = e.target.files && e.target.files[0];
   if (!file) return;
@@ -452,9 +543,10 @@ function updateCalcs() {
   $("allinCalc").textContent = (r !== "" || m !== "") ? (num(r) + num(m)).toFixed(2) + "%" : "—";
   const ab = yearsBetween($("f_abatementFrom").value, $("f_abatementUntil").value);
   $("abCalc").textContent = ab !== null ? ab.toFixed(1) + " yrs" : "—";
+  const glr = remYears($("f_glEnd").value);
+  $("glRemCalc").textContent = glr !== null ? glr.toFixed(1) + " yrs" : "—";
   $("rateLabel").textContent = $("f_index").value === "Fixed" ? "Fixed rate %" : "Index rate %";
-  // running totals
-  const f = {}; NUMF.forEach((k) => (f[k] = $("f_" + k).value));
+  const f = {}; NUMF.forEach((k) => (f[k] = $("f_" + k).value.replace(/,/g, "")));
   const d = derive(f);
   $("totalsbox").innerHTML =
     '<div class="cap">Running totals</div>' +
@@ -464,22 +556,32 @@ function updateCalcs() {
     trow("Affordable", fmtInt(f.nsfAffordable), fmtInt(f.unitsAffordable), fmtMoney(f.incAffordable)) +
     trow("Res. total", fmtInt(d.resNsf), fmtInt(d.resUnits), fmtMoney(d.resInc), true) +
     trow("Commercial", fmtInt(f.nsfCommercial), fmtInt(f.unitsCommercial), fmtMoney(f.incCommercial)) +
+    trow("Parking", "—", fmtInt(f.unitsParking), fmtMoney(f.incParking)) +
+    trow("Other", "—", "—", fmtMoney(f.incOther)) +
     trow("Total", fmtInt(d.totNsf), fmtInt(d.totUnits), fmtMoney(d.totInc), true) +
     '<div class="cap">Calculated rates</div>' +
-    trow("", "PSF", "$/Unit", "", true) +
-    trow("Market", psf(f.incMarket, f.nsfMarket), perUnit(f.incMarket, f.unitsMarket)) +
-    trow("Stabilized", psf(f.incStabilized, f.nsfStabilized), perUnit(f.incStabilized, f.unitsStabilized)) +
-    trow("Affordable", psf(f.incAffordable, f.nsfAffordable), perUnit(f.incAffordable, f.unitsAffordable)) +
-    trow("Res. total", psf(d.resInc, d.resNsf), perUnit(d.resInc, d.resUnits), "", true) +
-    trow("Commercial", psf(f.incCommercial, f.nsfCommercial), "—");
+    trow("", "PSF", "$/Unit", "SF/Unit", true) +
+    trow("Market", psf(f.incMarket, f.nsfMarket), perUnit(f.incMarket, f.unitsMarket), sfu(f.nsfMarket, f.unitsMarket)) +
+    trow("Stabilized", psf(f.incStabilized, f.nsfStabilized), perUnit(f.incStabilized, f.unitsStabilized), sfu(f.nsfStabilized, f.unitsStabilized)) +
+    trow("Affordable", psf(f.incAffordable, f.nsfAffordable), perUnit(f.incAffordable, f.unitsAffordable), sfu(f.nsfAffordable, f.unitsAffordable)) +
+    trow("Res. total", psf(d.resInc, d.resNsf), perUnit(d.resInc, d.resUnits), sfu(d.resNsf, d.resUnits), true) +
+    trow("Commercial", psf(f.incCommercial, f.nsfCommercial), perUnit(f.incCommercial, f.unitsCommercial), sfu(f.nsfCommercial, f.unitsCommercial));
 }
-function updateAbVisibility() {
-  const yes = $("f_abatement").value === "Yes";
-  $("abTypeWrap").classList.toggle("hidden", !yes);
-  $("abDatesWrap").classList.toggle("hidden", !yes);
+function updateToggles() {
+  const abYes = $("f_abatement").value === "Yes";
+  $("abTypeWrap").classList.toggle("hidden", !abYes);
+  $("abDatesWrap").classList.toggle("hidden", !abYes);
+  const glYes = $("f_groundLease").value === "Yes";
+  $("glOwnerWrap").classList.toggle("hidden", !glYes);
+  $("glDatesWrap").classList.toggle("hidden", !glYes);
+  $("glPayWrap").classList.toggle("hidden", !glYes);
 }
-document.querySelector(".sheet").addEventListener("input", updateCalcs);
-$("f_abatement").addEventListener("change", () => { updateAbVisibility(); });
+document.querySelector(".sheet").addEventListener("input", (e) => {
+  if (e.target.classList && e.target.classList.contains("fmt")) formatLive(e.target);
+  updateCalcs();
+});
+$("f_abatement").addEventListener("change", updateToggles);
+$("f_groundLease").addEventListener("change", updateToggles);
 $("f_index").addEventListener("change", updateCalcs);
 
 // ---------- backup / restore ----------
