@@ -190,7 +190,10 @@ button:focus-visible { outline: 2px solid var(--green); outline-offset: 2px; }
 
     <div class="sec"><span>Debt</span><i></i></div>
     <div class="grid">
-      <div><label>Lender</label><input id="f_lender" placeholder="e.g. Wells Fargo" /></div>
+      <div class="g2">
+        <div><label>Lender</label><input id="f_lender" placeholder="e.g. Wells Fargo" /></div>
+        <div><label>Total loan balance $</label><input class="fmt" inputmode="decimal" id="f_loanBalance" /></div>
+      </div>
       <div class="g3">
         <div><label>Origination</label><input type="date" id="f_origination" /></div>
         <div><label>Maturity</label><input type="date" id="f_maturity" /></div>
@@ -261,7 +264,7 @@ const KEY = "portfolio-ledger-data";
 const NUMF = ["zfa","gsf","nsfMarket","nsfStabilized","nsfAffordable","nsfCommercial",
   "unitsMarket","unitsStabilized","unitsAffordable","unitsCommercial","unitsParking",
   "incMarket","incStabilized","incAffordable","incCommercial","incParking","incOther",
-  "indexRate","margin","glPayment"];
+  "indexRate","margin","glPayment","loanBalance"];
 const TXTF = ["name","location","spv","lender","origination","maturity","index",
   "acquisition","tco1","borough","block","lot",
   "groundLease","glFeeOwner","glStart","glEnd",
@@ -362,7 +365,7 @@ function render() {
           "<div></div>" +
         "</div>" +
         '<div class="sec"><span>Areas</span><i></i></div>' +
-        '<div class="metrics3">' + metric("Total ZFA", fmtInt(a.zfa)) + metric("GSF", fmtInt(a.gsf)) + metric("Comm. NSF", fmtInt(a.nsfCommercial)) + "</div>" +
+        '<div class="metrics3">' + metric("Total ZFA", fmtInt(a.zfa)) + metric("GSF", fmtInt(a.gsf)) + "<div></div>" + "</div>" +
         '<div class="sec"><span>Mix &amp; income</span><i></i></div>' +
         trow("", "NSF", "Units", "Income", true) +
         trow("Market", fmtInt(a.nsfMarket), fmtInt(a.unitsMarket), fmtMoney(a.incMarket)) +
@@ -383,6 +386,7 @@ function render() {
         '<div class="sec"><span>Debt</span><i></i></div>' +
         '<div class="metrics3">' +
           metric("Lender", esc(a.lender || "—"), "plain") +
+          metric("Loan balance", fmtMoney(a.loanBalance)) +
           metric("Origination", fmtDate(a.origination)) +
           metric("Term", d.termYrs !== null ? d.termYrs.toFixed(1) + " yrs" : "—") +
           metric("Maturity", fmtDate(a.maturity)) +
@@ -432,11 +436,12 @@ function render() {
       '<div class="sub">' + mapsLink + (a.location && a.spv ? " · " : "") + esc(a.spv || "") + "</div></div>" +
       (a.abatement === "Yes" ? '<span class="badge">' + esc(a.abatementType || "Abated") + "</span>" : "") +
       "</div>" +
-      '<div class="metrics">' +
-      metric("Units", fmtInt(d.resUnits)) + metric("GSF", fmtInt(a.gsf)) +
-      metric("All-in", d.allIn !== null ? d.allIn.toFixed(2) + "%" : "—", "accent") +
-      metric("Maturity", fmtDate(a.maturity)) +
-      "</div>" + detail +
+      (open ? "" :
+        '<div class="metrics">' +
+        metric("Units", fmtInt(d.resUnits)) + metric("GSF", fmtInt(a.gsf)) +
+        metric("All-in", d.allIn !== null ? d.allIn.toFixed(2) + "%" : "—", "accent") +
+        metric("Maturity", fmtDate(a.maturity)) +
+        "</div>") + detail +
       '<div class="btnrow">' +
       '<button class="btn primary" data-act="toggle" data-id="' + a.id + '">' + (open ? "Collapse" : "Full detail") + "</button>" +
       '<button class="btn flex1" data-act="edit" data-id="' + a.id + '">Edit</button>' +
