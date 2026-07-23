@@ -207,9 +207,9 @@ button:focus-visible { outline: 2px solid var(--green); outline-offset: 2px; }
     <div class="sec"><span>Property taxes</span><i></i></div>
     <div class="grid">
       <div class="g3">
+        <div><label>Borough</label><select id="f_borough"><option value="">—</option><option>Manhattan</option><option>Bronx</option><option>Brooklyn</option><option>Queens</option><option>Staten Island</option></select></div>
         <div><label>Block</label><input inputmode="numeric" id="f_block" /></div>
         <div><label>Lot</label><input inputmode="numeric" id="f_lot" /></div>
-        <div></div>
       </div>
     </div>
 
@@ -222,11 +222,12 @@ button:focus-visible { outline: 2px solid var(--green); outline-offset: 2px; }
       <div class="g3 hidden" id="glDatesWrap">
         <div><label>Start</label><input type="date" id="f_glStart" /></div>
         <div><label>End</label><input type="date" id="f_glEnd" /></div>
-        <div><label>Remaining (calc.)</label><div class="calc" id="glRemCalc">—</div></div>
+        <div><label>Term (calc.)</label><div class="calc" id="glTermCalc">—</div></div>
       </div>
       <div class="g3 hidden" id="glPayWrap">
         <div><label>Annual payment $</label><input class="fmt" inputmode="decimal" id="f_glPayment" /></div>
-        <div></div><div></div>
+        <div><label>Remaining (calc.)</label><div class="calc" id="glRemCalc">—</div></div>
+        <div></div>
       </div>
     </div>
 
@@ -240,6 +241,10 @@ button:focus-visible { outline: 2px solid var(--green); outline-offset: 2px; }
         <div><label>From</label><input type="date" id="f_abatementFrom" /></div>
         <div><label>Until</label><input type="date" id="f_abatementUntil" /></div>
         <div><label>Years (calc.)</label><div class="calc" id="abCalc">—</div></div>
+      </div>
+      <div class="g3 hidden" id="abRemWrap">
+        <div><label>Remaining (calc.)</label><div class="calc" id="abRemCalc">—</div></div>
+        <div></div><div></div>
       </div>
     </div>
 
@@ -258,7 +263,7 @@ const NUMF = ["zfa","gsf","nsfMarket","nsfStabilized","nsfAffordable","nsfCommer
   "incMarket","incStabilized","incAffordable","incCommercial","incParking","incOther",
   "indexRate","margin","glPayment"];
 const TXTF = ["name","location","spv","lender","origination","maturity","index",
-  "acquisition","tco1","block","lot",
+  "acquisition","tco1","borough","block","lot",
   "groundLease","glFeeOwner","glStart","glEnd",
   "abatement","abatementType","abatementFrom","abatementUntil"];
 
@@ -294,8 +299,10 @@ function derive(a) {
   const remYrs = remYears(a.maturity);
   const allIn = (num(a.indexRate) || num(a.margin)) ? num(a.indexRate) + num(a.margin) : null;
   const abYrs = yearsBetween(a.abatementFrom, a.abatementUntil);
+  const abRemYrs = remYears(a.abatementUntil);
+  const glTermYrs = yearsBetween(a.glStart, a.glEnd);
   const glRemYrs = remYears(a.glEnd);
-  return { resNsf, resUnits, resInc, totNsf, totUnits, totInc, termYrs, remYrs, allIn, abYrs, glRemYrs };
+  return { resNsf, resUnits, resInc, totNsf, totUnits, totInc, termYrs, remYrs, allIn, abYrs, abRemYrs, glTermYrs, glRemYrs };
 }
 
 // SF/unit for a category, taking nsf and units raw values
@@ -327,13 +334,12 @@ const metric = (lab, val, cls) => '<div class="m"><div class="lab">' + esc(lab) 
 
 // ---------- render ----------
 function render() {
-  let tU = 0, tG = 0, tI = 0;
-  assets.forEach((a) => { const d = derive(a); tU += d.resUnits; tG += num(a.gsf); tI += d.totInc; });
+  let tU = 0, tN = 0;
+  assets.forEach((a) => { const d = derive(a); tU += d.resUnits; tN += d.totNsf; });
   $("rollup").innerHTML =
-    '<div><div class="lab">Assets</div><div class="val">' + assets.length + "</div></div>" +
-    '<div><div class="lab">Res. units</div><div class="val">' + fmtInt(tU) + "</div></div>" +
-    '<div><div class="lab">GSF</div><div class="val">' + fmtInt(tG) + "</div></div>" +
-    '<div><div class="lab">Income</div><div class="val">' + fmtMoney(tI) + "</div></div>";
+    '<div><div class="lab">Buildings</div><div class="val">' + assets.length + "</div></div>" +
+    '<div><div class="lab">Units</div><div class="val">' + fmtInt(tU) + "</div></div>" +
+    '<div><div class="lab">NSF</div><div class="val">' + fmtInt(tN) + "</div></div>";
 
   if (!assets.length) {
     $("list").innerHTML = '<div class="empty"><b>No assets yet</b>Add your first property with the + button.</div>';
@@ -388,9 +394,9 @@ function render() {
         "</div>" +
         '<div class="sec"><span>Property taxes</span><i></i></div>' +
         '<div class="metrics3">' +
+          metric("Borough", esc(a.borough || "—"), "plain") +
           metric("Block", esc(a.block || "—"), "plain") +
           metric("Lot", esc(a.lot || "—"), "plain") +
-          "<div></div>" +
         "</div>" +
         '<div class="sec"><span>Ground lease</span><i></i></div>' +
         (a.groundLease === "Yes"
@@ -398,6 +404,7 @@ function render() {
             metric("Fee owner", esc(a.glFeeOwner || "—"), "plain") +
             metric("Start", fmtDate(a.glStart)) +
             metric("End", fmtDate(a.glEnd)) +
+            metric("Term", d.glTermYrs !== null ? d.glTermYrs.toFixed(1) + " yrs" : "—") +
             metric("Remaining", d.glRemYrs !== null ? d.glRemYrs.toFixed(1) + " yrs" : "—", "accent") +
             metric("Annual payment", fmtMoney(a.glPayment)) +
             "</div>"
@@ -408,7 +415,8 @@ function render() {
             metric("Type", esc(a.abatementType || "—"), "plain") +
             metric("From", fmtDate(a.abatementFrom)) +
             metric("Until", fmtDate(a.abatementUntil)) +
-            metric("Years", d.abYrs !== null ? d.abYrs.toFixed(1) : "—", "accent") +
+            metric("Years", d.abYrs !== null ? d.abYrs.toFixed(1) : "—") +
+            metric("Remaining", d.abRemYrs !== null ? d.abRemYrs.toFixed(1) + " yrs" : "—", "accent") +
             "</div>"
           : '<div class="hint">None</div>');
     }
@@ -543,6 +551,10 @@ function updateCalcs() {
   $("allinCalc").textContent = (r !== "" || m !== "") ? (num(r) + num(m)).toFixed(2) + "%" : "—";
   const ab = yearsBetween($("f_abatementFrom").value, $("f_abatementUntil").value);
   $("abCalc").textContent = ab !== null ? ab.toFixed(1) + " yrs" : "—";
+  const abr = remYears($("f_abatementUntil").value);
+  $("abRemCalc").textContent = abr !== null ? abr.toFixed(1) + " yrs" : "—";
+  const glt = yearsBetween($("f_glStart").value, $("f_glEnd").value);
+  $("glTermCalc").textContent = glt !== null ? glt.toFixed(1) + " yrs" : "—";
   const glr = remYears($("f_glEnd").value);
   $("glRemCalc").textContent = glr !== null ? glr.toFixed(1) + " yrs" : "—";
   $("rateLabel").textContent = $("f_index").value === "Fixed" ? "Fixed rate %" : "Index rate %";
@@ -571,6 +583,7 @@ function updateToggles() {
   const abYes = $("f_abatement").value === "Yes";
   $("abTypeWrap").classList.toggle("hidden", !abYes);
   $("abDatesWrap").classList.toggle("hidden", !abYes);
+  $("abRemWrap").classList.toggle("hidden", !abYes);
   const glYes = $("f_groundLease").value === "Yes";
   $("glOwnerWrap").classList.toggle("hidden", !glYes);
   $("glDatesWrap").classList.toggle("hidden", !glYes);
